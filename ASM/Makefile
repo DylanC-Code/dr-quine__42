@@ -3,7 +3,7 @@
 # ============================================================================== #
 
 # 📛 Program name
-NAME := Colleen
+COLLEEN_OUT := Colleen
 
 # 📂 Directories
 SRCS_DIR := srcs/
@@ -11,14 +11,14 @@ BUILD_DIR := build/
 
 # 📦 Assembler & Flags
 AS := nasm
-LD := ld
+CC := cc
 ASMFLAGS := -f elf64
 
 # 📁 Sources & Objets
-SRCS :=	$(addprefix srcs/, \
-		main.asm \
+COLLEEN_SRCS :=	$(addprefix srcs/, \
+		Colleen.asm \
 )
-OBJS := $(patsubst %.asm, $(BUILD_DIR)%.o, $(SRCS))
+COLLEEN_OBJS := $(patsubst %.asm, $(BUILD_DIR)%.o, $(COLLEEN_SRCS))
 
 # 🛠 Utilitaires
 RM := rm -rf
@@ -28,11 +28,10 @@ RM := rm -rf
 #                               RULES - BUILD FLOW                               #
 # ============================================================================== #
 
-all: $(BUILD_DIR) $(NAME)
+all: $(BUILD_DIR) colleen
 
-$(NAME): $(OBJS)
-# 	$(LD) -o $(NAME) $(OBJS)
-	cc -o $(NAME) -no-pie $(OBJS)
+colleen: $(COLLEEN_OBJS)
+	$(CC) -o $(COLLEEN_OUT) -no-pie $(COLLEEN_OBJS)
 
 # 🔨 Assembling of .s to .o
 $(BUILD_DIR)%.o: %.asm
@@ -57,7 +56,7 @@ clean:
 	$(RM) $(BUILD_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(COLLEEN_OUT)
 
 re: fclean all
 
