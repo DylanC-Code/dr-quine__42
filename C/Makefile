@@ -6,7 +6,7 @@
 #    By: dylan <dylan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/09 14:36:04 by dcastor           #+#    #+#              #
-#    Updated: 2025/11/02 22:19:24 by dylan            ###   ########.fr        #
+#    Updated: 2025/11/03 12:57:11 by dylan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 # ============================================================================== #
 
 # 📛 Nom du programme
-NAME := Colleen
+COLLEEN_OUT := Colleen
 
 # 📂 Répertoires
 SRCS_DIR := srcs/
@@ -32,12 +32,12 @@ MAKE := make
 RM := rm -rf
 
 # 📁 Sources & Objets
-SRCS := $(addprefix $(SRCS_DIR), \
-		main.c \
+COLLEEN_SRCS := $(addprefix $(SRCS_DIR), \
+		Colleen.c \
 )
-OBJS := $(patsubst %.c, $(BUILD_DIR)%.o, $(SRCS))
+COLLEEN_OBJS := $(patsubst %.c, $(BUILD_DIR)%.o, $(COLLEEN_SRCS))
 
-DEPS := $(OBJS:.o=.d)
+DEPS := $(COLLEEN_OBJS:.o=.d)
 
 
 # ============================================================================== #
@@ -45,11 +45,11 @@ DEPS := $(OBJS:.o=.d)
 # ============================================================================== #
 
 # 🎯 Règle principale
-all: $(NAME)
+all: colleen
 
 # 🧱 Construction de l'exécutable
-$(NAME): $(BUILD_DIR) $(OBJS)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJS)
+colleen: $(BUILD_DIR) $(COLLEEN_OBJS)
+	$(CC) $(CFLAGS) $(COLLEEN_OBJS) -o $(COLLEEN_OUT)
 
 # 🔨 Compilation des .c vers .o
 $(BUILD_DIR)%.o: %.c
@@ -73,16 +73,9 @@ clean:
 	$(RM) $(BUILD_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(COLLEEN_OUT)
 
 re: fclean all
-
-# ============================================================================== #
-#                                    TEST RULES                                  #
-# ============================================================================== #
-
-test_leak: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes --log-fd=1 --trace-children=yes ./$(NAME) test.cub
 
 # ============================================================================== #
 #                                  PHONY & DEPS                                  #
