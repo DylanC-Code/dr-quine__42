@@ -12,7 +12,7 @@ BUILD_DIR := build/
 # 📦 Assembler & Flags
 AS := nasm
 LD := ld
-ASMFLAGS := -felf64
+ASMFLAGS := -f elf64
 
 # 📁 Sources & Objets
 SRCS :=	$(addprefix srcs/, \
@@ -31,7 +31,8 @@ RM := rm -rf
 all: $(BUILD_DIR) $(NAME)
 
 $(NAME): $(OBJS)
-	$(LD) -o $(NAME) $(OBJS)
+# 	$(LD) -o $(NAME) $(OBJS)
+	cc -o $(NAME) -no-pie $(OBJS)
 
 # 🔨 Assembling of .s to .o
 $(BUILD_DIR)%.o: %.asm
