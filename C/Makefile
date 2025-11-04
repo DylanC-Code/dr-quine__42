@@ -5,6 +5,7 @@
 # 📛 Nom du programme
 COLLEEN_OUT := Colleen
 GRACE_OUT := Grace
+SULLY_OUT := Sully
 
 # 📂 Répertoires
 SRCS_DIR := srcs/
@@ -27,10 +28,14 @@ COLLEEN_SRCS := $(addprefix $(SRCS_DIR), \
 GRACE_SRCS := $(addprefix $(SRCS_DIR), \
 		Grace.c \
 )
+SULLY_SRCS := $(addprefix $(SRCS_DIR), \
+		Sully.c \
+)
 COLLEEN_OBJS := $(patsubst %.c, $(BUILD_DIR)%.o, $(COLLEEN_SRCS))
 GRACE_OBJS := $(patsubst %.c, $(BUILD_DIR)%.o, $(GRACE_SRCS))
+SULLY_OBJS := $(patsubst %.c, $(BUILD_DIR)%.o, $(SULLY_SRCS))
 
-DEPS := $(COLLEEN_OBJS:.o=.d) $(GRACE_OBJS:.o=.d)
+DEPS := $(COLLEEN_OBJS:.o=.d) $(GRACE_OBJS:.o=.d) $(SULLY_OBJS:.o=.d)
 
 
 # ============================================================================== #
@@ -38,7 +43,7 @@ DEPS := $(COLLEEN_OBJS:.o=.d) $(GRACE_OBJS:.o=.d)
 # ============================================================================== #
 
 # 🎯 Règle principale
-all: colleen grace
+all: colleen grace sully
 
 # 🧱 Construction de l'exécutable
 colleen: $(BUILD_DIR) $(COLLEEN_OBJS)
@@ -46,6 +51,9 @@ colleen: $(BUILD_DIR) $(COLLEEN_OBJS)
 
 grace: $(BUILD_DIR) $(GRACE_OBJS)
 	$(CC) $(CFLAGS) $(GRACE_OBJS) -o $(GRACE_OUT)
+
+sully: $(BUILD_DIR) $(SULLY_OBJS)
+	$(CC) $(CFLAGS) $(SULLY_OBJS) -o $(SULLY_OUT)
 
 # 🔨 Compilation des .c vers .o
 $(BUILD_DIR)%.o: %.c
@@ -69,7 +77,7 @@ clean:
 	$(RM) $(BUILD_DIR)
 
 fclean: clean
-	$(RM) $(COLLEEN_OUT)
+	$(RM) $(COLLEEN_OUT) $(GRACE_OUT) $(SULLY_OUT)*
 
 re: fclean all
 
