@@ -5,6 +5,7 @@
 # 📛 Program name
 COLLEEN_OUT := Colleen
 GRACE_OUT := Grace
+SULLY_OUT := Sully
 
 # 📂 Directories
 SRCS_DIR := srcs/
@@ -23,8 +24,12 @@ COLLEEN_SRCS :=	$(addprefix srcs/, \
 GRACE_SRCS :=	$(addprefix srcs/, \
 		Grace.asm \
 )
+SULLY_SRCS :=	$(addprefix srcs/, \
+		Sully.asm \
+)
 COLLEEN_OBJS := $(patsubst %.asm, $(BUILD_DIR)%.o, $(COLLEEN_SRCS))
 GRACE_OBJS := $(patsubst %.asm, $(BUILD_DIR)%.o, $(GRACE_SRCS))
+SULLY_OBJS := $(patsubst %.asm, $(BUILD_DIR)%.o, $(SULLY_SRCS))
 
 # 🛠 Utilitaires
 RM := rm -rf
@@ -34,13 +39,16 @@ RM := rm -rf
 #                               RULES - BUILD FLOW                               #
 # ============================================================================== #
 
-all: colleen grace	
+all: colleen grace sully
 
 colleen: $(BUILD_DIR) $(COLLEEN_OBJS)
 	$(CC) -o $(COLLEEN_OUT) -no-pie $(COLLEEN_OBJS)
 
 grace: $(BUILD_DIR) $(GRACE_OBJS)
 	$(LD) $(GRACE_OBJS) -o $(GRACE_OUT) -lc --dynamic-linker /lib64/ld-linux-x86-64.so.2
+
+sully: $(BUILD_DIR) $(SULLY_OBJS)
+	$(LD) $(SULLY_OBJS) -o $(SULLY_OUT) -lc --dynamic-linker /lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
 
 # 🔨 Assembling of .s to .o
 $(BUILD_DIR)%.o: %.asm
@@ -65,7 +73,7 @@ clean:
 	$(RM) $(BUILD_DIR)
 
 fclean: clean
-	$(RM) $(COLLEEN_OUT) $(GRACE_OUT)*
+	$(RM) $(COLLEEN_OUT) $(GRACE_OUT)* $(SULLY_OUT)*
 
 re: fclean all
 
